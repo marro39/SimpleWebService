@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xmlns:mvc="http://www.springframework.org/schema/mvc"
+ xmlns:context="http://www.springframework.org/schema/context"
+ xsi:schemaLocation="http://www.springframework.org/schema/mvc
+ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+ http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+ 
+ 
+ <!-- **************************************************************** -->
+ <!-- RESOURCE FOLDERS CONFIGURATION -->
+ <!-- Dispatcher configuration for serving static resources -->
+ <!-- **************************************************************** -->
+ <mvc:resources location="/resources/images/" mapping="/resources/images/**" />
+ <mvc:resources location="/resources/css/" mapping="/resources/css/**" />
+ <mvc:resources location="/resources/js/" mapping="/resources/js/**" />
+ 
+ <!-- **************************************************************** -->
+ <!-- SPRING ANNOTATION PROCESSING -->
+ <!-- **************************************************************** -->
+ <mvc:annotation-driven />
+ 
+ <context:component-scan base-package="org.web.controllers,org.web.domain" />
+ 
+ <context:annotation-config />
+ <!-- **************************************************************** -->
+ <!-- MESSAGE EXTERNALIZATION/INTERNATIONALIZATION -->
+ <!-- Standard Spring MessageSource implementation -->
+ <!-- **************************************************************** -->
+ <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+ <property name="basename" value="Messages" />
+ </bean>
+ <!-- **************************************************************** -->
+ <!-- THYMELEAF-SPECIFIC ARTIFACTS -->
+ <!-- TemplateResolver <- TemplateEngine <- ViewResolver -->
+ <!-- **************************************************************** -->
+ <bean id="templateResolver"
+ class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+ <property name="prefix" value="/WEB-INF/templates/" />
+ <property name="suffix" value=".html" />
+ <property name="templateMode" value="HTML5" />
+ </bean>
+ 
+ <bean id="templateEngine"
+ class="org.thymeleaf.spring3.SpringTemplateEngine">
+ <property name="templateResolver" ref="templateResolver" />
+ </bean>
+ 
+ <bean class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
+<property name="templateEngine" ref="templateEngine" />
+ </bean> 
+ 
+ <!-- Injecting jsonMessageConverter(class MappingJackson2HttpMessageConverter) as a ref bean to property messageConverters.
+ 	This configuration will load on initiation and jsonMessageConverter will convert all return objects in responsebody to JSON
+ 	format. 	 
+ -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+     
+    <!-- Configure bean to convert JSON to POJO and vice versa -->
+    <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    </bean> 
+    
+    <!--  <bean id="myWeatherXmlHandler" class="org.core.WeatherXmlHandler"></bean>  -->    
+ 	
+</beans>
