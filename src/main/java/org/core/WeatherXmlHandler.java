@@ -57,6 +57,7 @@ public class WeatherXmlHandler extends DefaultHandler2  {
 			e.printStackTrace();
 			System.out.println("FAILED ON CREATING NEW PARSER!!!");
 		}
+		link=null;
 		link="http://www.yr.no/place/" + this.country + "/" + this.district + "/" + this.city + "/forecast_hour_by_hour.xml";
 		//String link="http://www.yr.no/place/Sweden/Västra_Götaland/Trollhättan/forecast.xml";
 		
@@ -81,11 +82,11 @@ public class WeatherXmlHandler extends DefaultHandler2  {
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("FAILED ON CREATING NEW BUFFEREDREDAER!!!");
+			System.out.println("FAILED ON CREATING NEW BUFFEREDREADER!!!");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("FAILED ON CREATING NEW BUFFEREDREDAER!!!");
+			System.out.println("FAILED ON CREATING NEW BUFFEREDREADER!!!");
 		}
 		inputSource=new InputSource(bufferedReader);		
 		weatherInfoList = new ArrayList<WeatherInfo>();

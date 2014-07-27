@@ -2,6 +2,7 @@ package org.web.controllers;
 
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,8 +32,7 @@ public class WeatherController {
 	@RequestMapping(value="", method=RequestMethod.GET)
 	//@ResponseBody
 	public String getHomePage(){
-		return "home";
-		//return "It is working this fucking weatherapp";
+		return "home";		
 	}	
 	
 	@RequestMapping(value="/weather", method=RequestMethod.GET)	
@@ -40,9 +40,9 @@ public class WeatherController {
 			@RequestParam(value="district", required=false, defaultValue="Västra_Götaland") String district,
 			@RequestParam(value="city", required=false, defaultValue="Trollhättan") String city	) throws ParserConfigurationException, SAXException, IOException{
 		
-		this.country=country;
-		this.discrict=district;
-		this.city=city;
+		this.country=URLEncoder.encode(country, "UTF-8");   //country;
+		this.discrict=URLEncoder.encode(district, "UTF-8");  //district;
+		this.city=URLEncoder.encode(city, "UTF-8");   //city;
 		
 		weatherXmlHandler=new WeatherXmlHandler(this.country, this.discrict, this.city);
 		weatherXmlHandler.startParse();	
